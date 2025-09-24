@@ -29,7 +29,7 @@ JavaScript (ES6) (form validation & DOM manipulation)
 
 📸 Demo Screenshot
 
-![Interactive Space Planets Screenshot](./task2.png)
+![Screenshot of Task 2](https://github.com/Harshini-Pulugurtha/Apexplanet-task2/blob/main/Task2.png)
 
 
 🔗 Live Links
