@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Creative Portfolio</title>
+  <style>
+    /* General styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #fceef5, #e8f6f3, #fef9e7);
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    main {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+    /* Card style */
+    .card {
+      background: #ffffffcc;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    /* Contact form */
+    form h2, #todo h2 {
+      margin-bottom: 10px;
+      color: #444;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    input:focus, textarea:focus {
+      border-color: #a18cd1;
+      outline: none;
+      box-shadow: 0 0 5px #a18cd1;
+    }
+    button {
+      background: #a18cd1;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #7b68b5;
+    }
+    /* To-do list */
+    #tasks li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0;
+      background: #fafafa;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    #tasks li:hover {
+      background: #f0f0f0;
+    }
+    #tasks span.completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    #tasks button {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+    #tasks button:hover {
+      background: #e63946;
+    }
+    #clearAll {
+      margin-top: 10px;
+      background: #fbc2eb;
+      color: #333;
+    }
+    #clearAll:hover {
+      background: #f78fb3;
+      color: white;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+     My Creative Portfolio 
+  </header>
+
+  <main>
+    <!-- Contact Form -->
+    <form id="contactForm" class="card">
+      <h2>Contact Me</h2>
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Submit</button>
+      <p id="formMsg" style="font-size: 0.9rem; margin-top: 8px;"></p>
+    </form>
+
+    <!-- To-Do List -->
+    <div id="todo" class="card">
+      <h2>🌼 To-Do List</h2>
+      <input type="text" id="taskInput" placeholder="Enter a task">
+      <button onclick="addTask()">Add Task</button>
+      <ul id="tasks"></ul>
+      <button id="clearAll" onclick="clearTasks()">Clear All Tasks</button>
+    </div>
+  </main>
+
+  <script>
+    // Contact Form Validation
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let name = document.getElementById("name").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let message = document.getElementById("message").value.trim();
+      let msg = document.getElementById("formMsg");
+
+      let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (name === "" || email === "" || message === "") {
+        msg.style.color = "red";
+        msg.textContent = "⚠️ All fields are required!";
+      } else if (!email.match(emailPattern)) {
+        msg.style.color = "red";
+        msg.textContent = "❌ Enter a valid email address!";
+      } else {
+        msg.style.color = "green";
+        msg.textContent = "✅ Thank you, " + name + "! Your message has been sent.";
+        document.getElementById("contactForm").reset();
+      }
+    });
+
+    // To-Do List
+    function addTask(taskText = "") {
+      let taskInput = document.getElementById("taskInput");
+      let text = taskText || taskInput.value.trim();
+
+      if (text === "") {
+        if (!taskText) alert("⚠️ Please enter a task.");
+        return;
+      }
+
+      let li = document.createElement("li");
+
+      let span = document.createElement("span");
+      span.textContent = text;
+
+      let checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.onchange = () => span.classList.toggle("completed");
+
+      let btn = document.createElement("button");
+      btn.textContent = "Delete";
+      btn.onclick = () => li.remove();
+
+      li.appendChild(checkbox);
+      li.appendChild(span);
+      li.appendChild(btn);
+
+      document.getElementById("tasks").appendChild(li);
+
+      if (!taskText) taskInput.value = "";
+    }
+
+    // Load Default Demo Tasks
+    window.onload = function() {
+      const defaultTasks = [" Complete portfolio project", " Study JavaScript DOM", " Practice CSS Flexbox & Grid"];
+      defaultTasks.forEach(task => addTask(task));
+    };
+
+    // Clear All Tasks
+    function clearTasks() {
+      document.getElementById("tasks").innerHTML = "";
+    }
+  </script>
+</body>
+</html>
